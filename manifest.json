@@ -1,0 +1,10 @@
+{
+  "id": "media-layout",
+  "name": "Media Layout",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Adds Feishu/Notion-like automatic image and video layouts with resize handles for native Markdown embeds.",
+  "author": "Antepil",
+  "authorUrl": "https://github.com/Antepil",
+  "isDesktopOnly": false
+}
