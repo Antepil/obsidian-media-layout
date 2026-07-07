@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Rename the plugin display name to Media Intelligent layout.
+- Keep the plugin id as `media-layout` for BRAT and existing Obsidian installs.
+
 ## 0.1.0
 
 - Initial beta release.

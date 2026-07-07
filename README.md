@@ -1,10 +1,10 @@
-# Media Layout
+# Media Intelligent layout
 
 ![Obsidian plugin](https://img.shields.io/badge/Obsidian-plugin-7c3aed?style=flat-square)
-![Version](https://img.shields.io/badge/version-0.1.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.1.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Media Layout 是一款 Obsidian 插件，用于把 Markdown 里的原生图片、视频嵌入渲染成类似飞书和 Notion 的媒体排版：连续多张图片会自动组成图片墙，单个媒体或媒体组可以通过拖拽调整宽度。
+Media Intelligent layout 是一款 Obsidian 插件，用于把 Markdown 里的原生图片、视频嵌入渲染成类似飞书和 Notion 的智能媒体排版：连续多张图片会自动组成图片墙，单个媒体或媒体组可以通过拖拽调整宽度。
 
 插件优先保持 Markdown 兼容性。你依然使用 Obsidian 原生语法，例如 `![[image.png]]`、`![[video.mp4]]`、`![](https://example.com/image.jpg)`；禁用插件后，文档仍然是普通 Markdown/Obsidian 嵌入。
 
@@ -34,7 +34,7 @@ https://github.com/Antepil/obsidian-media-layout
 ```
 
 4. 等待 BRAT 下载 release 中的 `main.js`、`manifest.json`、`styles.css`。
-5. 到 Obsidian 的 Community plugins 页面启用 `Media Layout`。
+5. 到 Obsidian 的 Community plugins 页面启用 `Media Intelligent layout`。
 
 ### Manual
 
@@ -51,6 +51,8 @@ https://github.com/Antepil/obsidian-media-layout
 ```
 
 然后在 Obsidian 设置中启用插件。
+
+插件显示名是 `Media Intelligent layout`，插件 ID 仍为 `media-layout`，这样已安装用户可以平滑更新。
 
 ## Usage
 

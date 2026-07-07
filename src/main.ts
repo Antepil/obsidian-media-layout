@@ -85,6 +85,8 @@ const DEFAULT_SETTINGS: MediaLayoutSettings = {
   persistResize: true
 };
 
+const PLUGIN_DISPLAY_NAME = "Media Intelligent layout";
+
 const IMAGE_EXTENSIONS = new Set([
   "avif",
   "bmp",
@@ -141,7 +143,7 @@ export default class MediaLayoutPlugin extends Plugin {
         this.settings.fillMode = this.settings.fillMode === "cover" ? "contain" : "cover";
         await this.saveSettings();
         this.refreshMarkdownViews();
-        new Notice(`Media Layout: ${this.settings.fillMode}`);
+        new Notice(`${PLUGIN_DISPLAY_NAME}: ${this.settings.fillMode}`);
       }
     });
 
@@ -217,7 +219,7 @@ export default class MediaLayoutPlugin extends Plugin {
             }
             const changed = persistTokenWidth(options.editorView, token, width);
             if (!changed) {
-              new Notice("Media Layout: this embed syntax cannot store a native width.");
+              new Notice(`${PLUGIN_DISPLAY_NAME}: this embed syntax cannot store a native width.`);
             }
           }
         });
@@ -434,7 +436,7 @@ export default class MediaLayoutPlugin extends Plugin {
   resetCurrentMediaSizes(editor: Editor): void {
     const group = getEditorGroupAroundCursor(editor);
     if (!group) {
-      new Notice("Media Layout: no media group at cursor.");
+      new Notice(`${PLUGIN_DISPLAY_NAME}: no media group at cursor.`);
       return;
     }
 
@@ -447,14 +449,14 @@ export default class MediaLayoutPlugin extends Plugin {
     }
 
     this.resetCurrentMediaLayout(editor, false);
-    new Notice("Media Layout: media sizes reset.");
+    new Notice(`${PLUGIN_DISPLAY_NAME}: media sizes reset.`);
   }
 
   resetCurrentMediaLayout(editor: Editor, showNotice = true): void {
     const group = getEditorGroupAroundCursor(editor);
     if (!group) {
       if (showNotice) {
-        new Notice("Media Layout: no media group at cursor.");
+        new Notice(`${PLUGIN_DISPLAY_NAME}: no media group at cursor.`);
       }
       return;
     }
@@ -467,13 +469,13 @@ export default class MediaLayoutPlugin extends Plugin {
         editor.replaceRange("", { line: commentLineNumber, ch: 0 }, { line: commentLineNumber, ch: line.length });
       }
       if (showNotice) {
-        new Notice("Media Layout: group layout reset.");
+        new Notice(`${PLUGIN_DISPLAY_NAME}: group layout reset.`);
       }
       return;
     }
 
     if (showNotice) {
-      new Notice("Media Layout: no stored layout metadata found.");
+      new Notice(`${PLUGIN_DISPLAY_NAME}: no stored layout metadata found.`);
     }
   }
 
@@ -933,7 +935,7 @@ class MediaLayoutSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl("h2", { text: "Media Layout" });
+    containerEl.createEl("h2", { text: PLUGIN_DISPLAY_NAME });
 
     new Setting(containerEl)
       .setName("Enable Reading View")

@@ -1,7 +1,7 @@
 {
   "name": "obsidian-media-layout",
-  "version": "0.1.0",
-  "description": "Resizable image and video layouts for Obsidian markdown embeds.",
+  "version": "0.1.1",
+  "description": "Intelligent resizable image and video layouts for Obsidian markdown embeds.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
