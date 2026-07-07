@@ -238,6 +238,7 @@ export default class MediaLayoutPlugin extends Plugin {
       });
     }
 
+    this.preventImagePreviewOpen(root);
     return root;
   }
 
@@ -282,6 +283,7 @@ export default class MediaLayoutPlugin extends Plugin {
 
       event.preventDefault();
       event.stopPropagation();
+      event.stopImmediatePropagation();
       handle.setPointerCapture(event.pointerId);
 
       const startX = event.clientX;
@@ -290,6 +292,8 @@ export default class MediaLayoutPlugin extends Plugin {
       let latestWidth = startWidth;
 
       const onPointerMove = (moveEvent: PointerEvent) => {
+        moveEvent.preventDefault();
+        moveEvent.stopPropagation();
         const delta = moveEvent.clientX - startX;
         latestWidth = clampWidth(
           Math.round(startWidth + delta),
@@ -300,7 +304,9 @@ export default class MediaLayoutPlugin extends Plugin {
         resizedElement.style.maxWidth = "100%";
       };
 
-      const onPointerUp = () => {
+      const onPointerUp = (upEvent: PointerEvent) => {
+        upEvent.preventDefault();
+        upEvent.stopPropagation();
         handle.removeEventListener("pointermove", onPointerMove);
         handle.removeEventListener("pointerup", onPointerUp);
         handle.removeEventListener("pointercancel", onPointerUp);
@@ -311,6 +317,32 @@ export default class MediaLayoutPlugin extends Plugin {
       handle.addEventListener("pointerup", onPointerUp);
       handle.addEventListener("pointercancel", onPointerUp);
     });
+  }
+
+  preventImagePreviewOpen(root: HTMLElement): void {
+    const stopImagePreview = (event: Event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      if (target.closest(".media-layout-resize-handle")) {
+        return;
+      }
+
+      if (!target.closest("img, .image-embed, .internal-embed.image-embed")) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    };
+
+    root.addEventListener("click", stopImagePreview, { capture: true });
+    root.addEventListener("dblclick", stopImagePreview, { capture: true });
+    root.addEventListener("mousedown", stopImagePreview, { capture: true });
+    root.addEventListener("pointerdown", stopImagePreview, { capture: true });
   }
 
   processReadingView(el: HTMLElement, _ctx: MarkdownPostProcessorContext): void {
@@ -390,6 +422,8 @@ export default class MediaLayoutPlugin extends Plugin {
         });
       }
     }
+
+    this.preventImagePreviewOpen(wrapper);
   }
 
   isRenderedMediaOnlyBlock(element: HTMLElement): boolean {
@@ -419,18 +453,10 @@ export default class MediaLayoutPlugin extends Plugin {
       return [element];
     }
 
-    const directMediaNodes = Array.from(element.children).filter((child): child is HTMLElement => {
-      return child instanceof HTMLElement && this.isRenderedMediaOnlyBlock(child);
-    });
-
-    if (directMediaNodes.length > 0) {
-      return directMediaNodes;
-    }
-
     const mediaNodes = Array.from(element.querySelectorAll(getRenderedMediaSelector())).filter(
       (child): child is HTMLElement => child instanceof HTMLElement
     );
-    return mediaNodes.length > 0 ? mediaNodes : [];
+    return getTopLevelMediaNodes(mediaNodes);
   }
 
   resetCurrentMediaSizes(editor: Editor): void {
@@ -562,6 +588,10 @@ function buildLivePreviewDecorations(view: EditorView, plugin: MediaLayoutPlugin
 
 function selectionIntersectsGroup(view: EditorView, group: MediaGroup): boolean {
   return view.state.selection.ranges.some((range) => {
+    if (range.from === range.to) {
+      return false;
+    }
+
     const from = Math.min(range.from, range.to);
     const to = Math.max(range.from, range.to);
     return from <= group.to && to >= group.from;
@@ -921,6 +951,12 @@ function getRenderedMediaSelector(): string {
 
 function isRenderedMediaElement(element: HTMLElement): boolean {
   return element.matches(getRenderedMediaSelector());
+}
+
+function getTopLevelMediaNodes(mediaNodes: HTMLElement[]): HTMLElement[] {
+  return mediaNodes.filter((node) => {
+    return !mediaNodes.some((candidate) => candidate !== node && candidate.contains(node));
+  });
 }
 
 class MediaLayoutSettingTab extends PluginSettingTab {

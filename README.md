@@ -1,7 +1,7 @@
 # Media Intelligent layout
 
 ![Obsidian plugin](https://img.shields.io/badge/Obsidian-plugin-7c3aed?style=flat-square)
-![Version](https://img.shields.io/badge/version-0.1.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.1.2-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
 Media Intelligent layout 是一款 Obsidian 插件，用于把 Markdown 里的原生图片、视频嵌入渲染成类似飞书和 Notion 的智能媒体排版：连续多张图片会自动组成图片墙，单个媒体或媒体组可以通过拖拽调整宽度。
@@ -76,6 +76,8 @@ https://github.com/Antepil/obsidian-media-layout
 ```
 
 在 Live Preview 中，把鼠标移动到媒体右下角，会出现拖拽控制点。拖动结束后，插件会在支持的语法中写回尺寸。
+
+如果点击图片仍然直接进入 Obsidian 图片放大预览，说明当前 vault 还没有更新到 `0.1.2` 或插件没有重新加载。请在 BRAT 中更新插件，然后重启 Obsidian 或禁用再启用本插件。
 
 ## Layout Rules
 
